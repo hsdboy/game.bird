@@ -7,11 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        *{
+        * {
             padding: 0;
             margin: 0;
             box-sizing: border-box;
         }
+
         .box {
             width: 95%;
             height: 400px;
@@ -19,15 +20,20 @@
             margin: 100px auto 0;
             border: 1px #000 solid;
             overflow: hidden;
+            background: #72c4cf;
         }
-        .time {
+
+        .bottom {
             width: 80%;
-            height: 100px;
+            height: 40px;
             text-align: center;
             font-size: 29px;
             margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
         }
-        .start{
+
+        .start {
             width: 100px;
             height: 50px;
             border-radius: 15px;
@@ -43,28 +49,43 @@
             color: white;
             line-height: 50px;
         }
-        .under{
+
+        .under {
             width: 100%;
             height: 20px;
             position: absolute;
             bottom: 0;
+
         }
+        .bird-:before{
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: yellow;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+        }
+
     </style>
 </head>
 <body>
 <div class="box">
     <div class="under"></div>
 </div>
-<div class="time"></div>
+<div class="bottom">
+    <div class="time"></div>
+    <div class="mosttime"></div>
+</div>
 <div class="start">Ready Go!</div>
-
-
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
+
     $("<div>").addClass("tree").css({
         width: "50px",
         height: "100px",
-        background: "green",
+        background: "#73be2d",
         position: "absolute",
         left: "100%",
         bottom: "0"
@@ -73,7 +94,7 @@
     $("<div>").addClass("tree2").css({
         width: "50px",
         height: "100px",
-        background: "green",
+        background: "#73be2d",
         position: "absolute",
         left: "150%",
         top: "0"
@@ -81,87 +102,138 @@
         .appendTo(".box")
     $("<div>").addClass("bird").css({
         width: "50px",
-        height: "50px",
-        background: "red",
+        height: "30px",
         position: "absolute",
         left: "0",
         top: "0"
     })
         .appendTo(".box")
-    for (let i=0 ;i<$(".box").width()/20;i++){
-    $("<div>").addClass("ci").css({
-        width:"20",
-        borderBottom:"20px solid #F4BC51",
-        borderLeft:"10px solid #fff",
-        borderRight:"10px solid #fff",
-        float:"left"
-    }).appendTo(".under")}
-  $(".start").on("click",start )
-  function start() {
+    $("<div>").addClass("bird-").css({
+        width: "50px",
+        height: "30px",
+        background:"red",
+        position: "relative"
+    }).appendTo(".bird")
+    $("<div>").addClass("bird-b").css({
+        background: "transparent",
+        position: "absolute",
+        top: "-15px",
+        left: "10px",
+        borderBottom: "red 15px solid",
+        borderLeft: "transparent 3px solid",
+        borderRight: "transparent 10px solid"
+    }).appendTo(".bird-")
+    $("<div>").addClass("bird-a").css({
+        background: "transparent",
+        position: "absolute",
+        top: "-15px",
+        right: "10px",
+        borderBottom: "red 15px solid",
+        borderLeft: "transparent 3px solid",
+        borderRight: "transparent 10px solid"
+    }).appendTo(".bird-")
+
+
+
+    for (let i = 0; i < $(".box").width() / 20; i++) {
+        $("<div>").addClass("ci").css({
+            width: "20",
+            borderBottom: "20px solid #F4BC51",
+            borderLeft: "10px solid #72c4cf",
+            borderRight: "10px solid #72c4cf",
+            float: "left"
+        }).appendTo(".under")
+    }
+    $(".start").on("click", start)
+    function start() {
+        if (localStorage.t) {
+            $(".mosttime").html("最长时间:" + localStorage.t)
+        }
         $(".start").fadeOut(100)
-      $(".bird").animate({
-          left: "30%"
-      }, 2000)
-      let tleft = $(".tree").position().left;
-      let tleft2 = $(".tree2").position().left;
-      let spd = 2
-      let btop = $(".bird").position().top
-      let t = setInterval(move, 20)
 
-      function move() {
-          console.log(1)
-          if (tleft < -50) {
-              let height = Math.floor(Math.random() * 180 + 50)
-              $(".tree").css({left: "100%", height: `${height}px`})
-              tleft = $(".tree").position().left;
-          }
-          if (tleft2 < -50) {
-              let height = Math.floor(Math.random() * 150 + 30)
-              $(".tree2").css({left: "100%", height: `${height}px`})
-              tleft2 = $(".tree2").position().left;
-          }
+        $(".bird").css({left:0,top:0}).animate({
+            left: "30%"
+        }, 2000)
+        $(".tree").css({left:"100%"})
+        $(".tree2").css({left:"150%"})
+        let tleft = $(".tree").position().left;
+        let tleft2 = $(".tree2").position().left;
+        let spd = 2
+        let btop = $(".bird").position().top
+        let t = setInterval(move, 20)
 
-          tleft -= spd;
-          tleft2 -= spd;
-          spd += 0.001
-          $(".tree").css({left: tleft + "px"})
-          $(".tree2").css({left: tleft2 + "px"})
-      }
+        function move() {
+            console.log(1)
+            if (tleft < -50) {
+                let height = Math.floor(Math.random() * 180 + 50)
+                $(".tree").css({left: "100%", height: `${height}px`})
+                tleft = $(".tree").position().left;
+            }
+            if (tleft2 < -50) {
+                let height = Math.floor(Math.random() * 150 + 30)
+                $(".tree2").css({left: "100%", height: `${height}px`})
+                tleft2 = $(".tree2").position().left;
+            }
 
-      let speed = 1.5
-      $(".box").mousedown(function () {
-          btop -= 50
-          $(".bird").css({top: btop + "px"})
-      })
-      $(".box").mouseup(function () {
-          speed = 1.5
-      })
-      let bd = setInterval(fly, 20)
+            tleft -= spd;
+            tleft2 -= spd;
+            spd += 0.0015
+            $(".tree").css({left: tleft + "px"})
+            $(".tree2").css({left: tleft2 + "px"})
+        }
 
-      function fly() {
-          speed += 0.05
-          let ttop = $(".tree").position().top;
-          let tbottom = $(".tree2").height();
-          let bleft = $(".bird").position().left;
-          if (btop > 350 || (ttop < btop + 50 && tleft < bleft + 50 && tleft > bleft - 50) || (tbottom > btop && tleft2 < bleft + 50 && tleft2 > bleft - 50)) {
-              clearInterval(t)
-              clearInterval(bd)
-              clearInterval(tim)
-          }
-          btop += speed;
-          if (btop < 0) {
-              btop = 0
-          }
+        function fly() {
+            speed += 0.05
+            let ttop = $(".tree").position().top;
+            let tbottom = $(".tree2").height();
+            let bleft = $(".bird").position().left;
+            if (btop > 340 || (ttop < btop + 30 && tleft < bleft + 50 && tleft > bleft - 50) || (tbottom > btop && tleft2 < bleft + 50 && tleft2 > bleft - 50)) {
+                gameover()
 
-          $(".bird").css({top: btop + "px"})
-      }
+            }
+            btop += speed;
+            if (btop < 0) {
+                btop = 0
+            }
 
-      let time = 0;
-      let tim = setInterval(function () {
-          time++;
-          $(".time").html("时间:" + time)
-      }, 1000)
-  }
+            $(".bird").css({top: btop + "px"})
+        }
+
+        function gameover() {
+            clearInterval(t)
+            clearInterval(bd)
+            clearInterval(tim)
+            let ti = localStorage.t;
+            if (localStorage.t === undefined || time > ti) {
+                localStorage.t = JSON.stringify(time)
+            }
+            $(".start").html("Restart")
+            $(".start").show();
+        }
+
+
+        let speed = 1.5
+        $(".box").mousedown(function () {
+            btop -= 50
+            $(".bird").css({top: btop + "px"})
+            $(".bird-b").hide()
+            $(".bird-a").hide()
+        })
+        $(".box").mouseup(function () {
+            speed = 1.5
+            $(".bird-b").show()
+            $(".bird-a").show()
+        })
+        let bd = setInterval(fly, 20)
+
+
+        let time = 0;
+        let tim = setInterval(function () {
+            time++;
+            $(".time").html("时间:" + time)
+        }, 1000)
+    }
+
 
 </script>
 </body>
